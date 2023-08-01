@@ -1,0 +1,350 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Gym Management App
+
+  Sample SAM Template for Gym Management App
+
+Globals:
+  Function:
+    Runtime: java17
+    MemorySize: 512
+    Timeout: 30
+    Environment:
+      Variables:
+        GYM_TABLE: !Ref GymTable
+        CLIENT_TABLE: !Ref ClientTable
+        TRAINER_TABLE: !Ref TrainerTable
+        EMPLOYEE_TABLE: !Ref EmployeeTable
+
+Resources:
+  GymTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+  ClientTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+  TrainerTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+  EmployeeTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: id
+        Type: String
+
+  AddGymLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.gym.AddGymLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GymTable
+      Events:
+        AddGymEvent:
+          Type: Api
+          Properties:
+            Path: /gym
+            Method: POST
+
+  DeleteGymLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.gym.DeleteGymLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GymTable
+      Events:
+        DeleteGymEvent:
+          Type: Api
+          Properties:
+            Path: /gym/{id}
+            Method: DELETE
+
+  GetAllGymLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.gym.GetAllGymLambda::handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref GymTable
+      Events:
+        GetAllGymEvent:
+          Type: Api
+          Properties:
+            Path: /gyms
+            Method: GET
+
+  UpdateGymLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.gym.UpdateGymLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref GymTable
+      Events:
+        UpdateGymEvent:
+          Type: Api
+          Properties:
+            Path: /gym
+            Method: PUT
+
+  AddClientLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.client.AddClientLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ClientTable
+      Events:
+        AddGymEvent:
+          Type: Api
+          Properties:
+            Path: /client
+            Method: POST
+
+  DeleteClientLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.client.DeleteClientLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ClientTable
+      Events:
+        DeleteClientEvent:
+          Type: Api
+          Properties:
+            Path: /client/{id}
+            Method: DELETE
+
+  GetAllClientLambdaFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: SamGymApp
+        Handler: com.ivanov.sam_gym_app.lambda.client.GetAllClientLambda::handler
+        Policies:
+          - DynamoDBReadPolicy:
+              TableName: !Ref ClientTable
+        Events:
+          GetAllClientEvent:
+            Type: Api
+            Properties:
+              Path: /clients
+              Method: GET
+
+  UpdateClientLambdaFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: SamGymApp
+        Handler: com.ivanov.sam_gym_app.lambda.client.UpdateClientLambda::handler
+        Policies:
+          - DynamoDBCrudPolicy:
+              TableName: !Ref ClientTable
+        Events:
+          UpdateClientEvent:
+            Type: Api
+            Properties:
+              Path: /client
+              Method: PUT
+
+  AddTrainerLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.trainer.AddTrainerLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TrainerTable
+      Events:
+        AddTrainerEvent:
+          Type: Api
+          Properties:
+            Path: /trainer
+            Method: POST
+
+  DeleteTrainerLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.trainer.DeleteTrainerLambda::handler
+      Policies:
+         - DynamoDBCrudPolicy:
+            TableName: !Ref TrainerTable
+      Events:
+        DeleteTrainerEvent:
+          Type: Api
+          Properties:
+            Path: /trainer/{id}
+            Method: DELETE
+
+  GetAllTrainerLambdaFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: SamGymApp
+        Handler: com.ivanov.sam_gym_app.lambda.trainer.GetAllTrainerLambda::handler
+        Policies:
+          - DynamoDBReadPolicy:
+              TableName: !Ref TrainerTable
+        Events:
+          GetAllTrainerEvent:
+            Type: Api
+            Properties:
+              Path: /trainers
+              Method: GET
+
+  UpdateTrainerLambdaFunction:
+      Type: AWS::Serverless::Function
+      Properties:
+        CodeUri: SamGymApp
+        Handler: com.ivanov.sam_gym_app.lambda.trainer.UpdateTrainerLambda::handler
+        Policies:
+          - DynamoDBCrudPolicy:
+              TableName: !Ref TrainerTable
+        Events:
+          UpdateTrainerEvent:
+            Type: Api
+            Properties:
+              Path: /trainer
+              Method: PUT
+
+  AddEmployeeLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.employee.AddEmployeeLambda::handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EmployeeTable
+      Events:
+        AddEmployeeEvent:
+          Type: Api
+          Properties:
+            Path: /employee
+            Method: POST
+
+  DeleteEmployeeLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.employee.DeleteEmployeeLambda::handler
+      Policies:
+          - DynamoDBCrudPolicy:
+              TableName: !Ref EmployeeTable
+      Events:
+          DeleteEmployeeEvent:
+            Type: Api
+            Properties:
+              Path: /employee/{id}
+              Method: DELETE
+
+  GetAllEmployeesLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SamGymApp
+      Handler: com.ivanov.sam_gym_app.lambda.employee.GetAllEmployeesLambda::handler
+      Policies:
+          - DynamoDBReadPolicy:
+              TableName: !Ref EmployeeTable
+      Events:
+          GetAllEmployeesEvent:
+            Type: Api
+            Properties:
+              Path: /employees
+              Method: GET
+
+  UpdateEmployeeLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+        CodeUri: SamGymApp
+        Handler: com.ivanov.sam_gym_app.lambda.employee.UpdateEmployeeLambda::handler
+        Policies:
+          - DynamoDBCrudPolicy:
+              TableName: !Ref EmployeeTable
+        Events:
+          UpdateEmployeeEvent:
+            Type: Api
+            Properties:
+              Path: /employee
+              Method: PUT
+
+
+Outputs:
+  AddGymFunction:
+    Description: "Add Gym Lambda Function ARN"
+    Value: !GetAtt AddGymLambdaFunction.Arn
+
+  DeleteGymFunction:
+    Description: "Delete Gym Lambda Function ARN"
+    Value: !GetAtt DeleteGymLambdaFunction.Arn
+
+  GetAllGymFunction:
+    Description: "Get All Gyms Lambda Function ARN"
+    Value: !GetAtt GetAllGymLambdaFunction.Arn
+
+  UpdateGymFunction:
+    Description: "Update Gym Lambda Function ARN"
+    Value: !GetAtt UpdateGymLambdaFunction.Arn
+
+  AddClientFunction:
+    Description: "Add Client Lambda Function ARN"
+    Value: !GetAtt AddClientLambdaFunction.Arn
+
+  DeleteClientFunction:
+    Description: "Delete Client Lambda Function ARN"
+    Value: !GetAtt DeleteClientLambdaFunction.Arn
+
+  GetAllClientFunction:
+    Description: "Get All Clients Lambda Function ARN"
+    Value: !GetAtt GetAllClientLambdaFunction.Arn
+
+  UpdateClientFunction:
+    Description: "Update Client Lambda Function ARN"
+    Value: !GetAtt UpdateClientLambdaFunction.Arn
+
+  AddTrainerFunction:
+    Description: "Add Trainer Lambda Function ARN"
+    Value: !GetAtt AddTrainerLambdaFunction.Arn
+
+  DeleteTrainerFunction:
+    Description: "Delete Trainer Lambda Function ARN"
+    Value: !GetAtt DeleteTrainerLambdaFunction.Arn
+
+  GetAllTrainerFunction:
+    Description: "Get All Trainers Lambda Function ARN"
+    Value: !GetAtt GetAllTrainerLambdaFunction.Arn
+
+  UpdateTrainerFunction:
+    Description: "Update Trainer Lambda Function ARN"
+    Value: !GetAtt UpdateTrainerLambdaFunction.Arn
+
+  AddEmployeeFunction:
+    Description: "Add Employee Lambda Function ARN"
+    Value: !GetAtt AddEmployeeLambdaFunction.Arn
+
+  DeleteEmployeeFunction:
+      Description: "Delete Employee Lambda Function ARN"
+      Value: !GetAtt DeleteEmployeeLambdaFunction.Arn
+
+  GetAllEmployeesFunction:
+      Description: "Get All Employees Lambda Function ARN"
+      Value: !GetAtt GetAllEmployeesLambdaFunction.Arn
+
+  UpdateEmployeeFunction:
+      Description: "Update Employee Lambda Function ARN"
+      Value: !GetAtt UpdateEmployeeLambdaFunction.Arn
