@@ -1,0 +1,7 @@
+com\ivanov\sam_gym_app\lambda\GymManager.class
+com\ivanov\sam_gym_app\lambda\DeleteGymLambda.class
+com\ivanov\sam_gym_app\dto\GymDTO.class
+com\ivanov\sam_gym_app\lambda\UpdateGymLambda.class
+com\ivanov\sam_gym_app\lambda\AddGymLambda.class
+com\ivanov\sam_gym_app\lambda\GetAllGymLambda.class
+com\ivanov\sam_gym_app\entity\Gym.class
